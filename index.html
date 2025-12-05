@@ -383,5 +383,85 @@
       });
     })();
   </script>
+
+  <button id="chat-open-btn" class="chat-fab">
+      <i class="fa-solid fa-headset fa-xl"></i>
+      <span>Fale com nosso Assistente</span>
+  </button>
+
+  <div id="chat-modal" class="chat-modal-wrapper">
+    <div class="chat-modal-content">
+      <div class="chat-modal-header">
+        <h5 class="chat-title">Assistente Virtual Revitalize 🤖</h5>
+        <button id="chat-close-btn" class="close-btn"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="chat-modal-body">
+        <div class="chat-message-ai">Olá! Sou o Assistente Virtual do Revitalize. Como posso ajudar você hoje com dúvidas sobre nossas funcionalidades ou demonstrações?</div>
+        <div id="chat-messages"></div>
+      </div>
+      <div class="chat-modal-footer">
+        <input type="text" id="chat-input" placeholder="Digite sua mensagem..." class="form-control">
+        <button id="chat-send-btn" class="btn btn-primary"><i class="fa-solid fa-paper-plane"></i></button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Script para controlar o modal do chat
+    const openBtn = document.getElementById('chat-open-btn');
+    const closeBtn = document.getElementById('chat-close-btn');
+    const chatModal = document.getElementById('chat-modal');
+    const sendBtn = document.getElementById('chat-send-btn');
+    const chatInput = document.getElementById('chat-input');
+    const chatMessages = document.getElementById('chat-messages');
+
+    openBtn.addEventListener('click', () => {
+        chatModal.classList.add('open');
+        openBtn.style.display = 'none'; // Esconde o FAB ao abrir
+    });
+
+    closeBtn.addEventListener('click', () => {
+        chatModal.classList.remove('open');
+        openBtn.style.display = 'flex'; // Mostra o FAB ao fechar
+    });
+
+    sendBtn.addEventListener('click', () => sendMessage());
+    chatInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            sendMessage();
+        }
+    });
+
+    function sendMessage() {
+        const message = chatInput.value.trim();
+        if (message === '') return;
+
+        // Adiciona a mensagem do usuário
+        const userMessageDiv = document.createElement('div');
+        userMessageDiv.classList.add('chat-message-user');
+        userMessageDiv.textContent = message;
+        chatMessages.appendChild(userMessageDiv);
+
+        chatInput.value = ''; // Limpa o input
+        chatMessages.scrollTop = chatMessages.scrollHeight; // Rola para a última mensagem
+
+        // Simulação de resposta do assistente (apenas para demonstração)
+        setTimeout(() => {
+            const aiResponseDiv = document.createElement('div');
+            aiResponseDiv.classList.add('chat-message-ai');
+            
+            let responseText = 'Desculpe, sou apenas um protótipo. Por favor, use o formulário para falar com nossa equipe.';
+            if (message.toLowerCase().includes('funcionalidade')) {
+                responseText = 'Nossas principais funcionalidades incluem Prontuários Eletrônicos, Agendamento Inteligente e Controle de Acesso e Privacidade.';
+            } else if (message.toLowerCase().includes('demo')) {
+                responseText = 'Para solicitar uma demonstração, preencha o formulário acima na seção "Solicite uma demonstração gratuita".';
+            }
+
+            aiResponseDiv.textContent = responseText;
+            chatMessages.appendChild(aiResponseDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }, 1000);
+    }
+  </script>
 </body>
 </html>
